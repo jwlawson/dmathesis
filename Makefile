@@ -14,12 +14,12 @@ BUILD_DIR = build
 MAIN = $(NAME).pdf
 BIB_FILE = $(word 1, $(wildcard *.bib))
 CLS_FILE = dmathesis.cls
-ifneq ($(wildcard .git),)
+ifneq (,$(wildcard .git))
 	GIT_VARS = git.gen
-else
-	GIT_VARS = 
 endif
-WC_VARS = wc.gen
+ifneq (,$(shell which texcount))
+	WC_VARS = wc.gen
+endif
 PKGS = $(wildcard *.sty)
 
 TXFLAGS =  --synctex=1 -output-directory $(BUILD_DIR)
