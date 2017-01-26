@@ -1,6 +1,43 @@
 # Durham maths thesis template
 
+This template is a hand-me-down from numerous people and has evolved over the
+past few years. Steven Charlton worked on a number of fiddly details and fixed
+much of the template, which was started by M. Imran.
 
+The template aims to satisfy the university [guidelines], but these could change
+at any time. The most significant change would be to the margin sizes, which are
+specified in the template when the `geometry` package is loaded.
+
+## Usage
+
+Most of the weight of the thesis options are hidden in the `dmathesis.cls` class
+file, which is used by calling `\documentclass{dmathesis}` at the top of your
+thesis file. The class options are documented below.
+
+Also provided is a `preamble.tex` which contains some possibly useful packages,
+tool and commands.
+
+Bibliography support is provided by the `biblatex` package, using the bibtex
+backend by default. Change the `bibliography.bib` filename in the preamble to
+match your bibliography database. A modified style is provided in the package
+`bibstyle-patch`, which adds arXiv and doi links and other formatting, but is
+not at all necessary.
+
+## Building
+
+Running the standard build chain including `bibtex` in any of the standard latex
+writing programs should work.
+
+From the command line, use the usual commands
+```
+	pdflatex <filename>
+	bibtex <filename>
+	pdflatex <filename>
+	pdflatex <filename>
+```
+
+A Makefile is also provided which includes some additional functionality, but is
+not at all explained nor tested on any other systems.
 
 ## Class options
 
