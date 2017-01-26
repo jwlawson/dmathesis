@@ -1,0 +1,12 @@
+*.pdf
+!img/durham_logo.pdf
+main.bb
+main.bbl
+main.blg
+*.eps
+*.sh
+*.zip
+*.dvi
+build/
+img/build/
+*.gen

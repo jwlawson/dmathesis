@@ -1,0 +1,73 @@
+\IfFileExists{git.gen}{\input{git.gen}}{}
+\IfFileExists{wc.gen}{\input{wc.gen}}{}
+\PassOptionsToPackage{final}{graphicx}
+\documentclass[frontopenright,draft,twoside,openright]{dmathesis}
+\input{preamble}
+
+
+\begin{document}
+\title{Some title of the thesis}
+\author{Author's name}
+%\researchgroup{CPT or Stats or whomever}
+\pagenumbering{roman}
+\maketitlepage*
+
+\begin{abstract}
+%
+	This is some abstract about this thesis.
+%
+\end{abstract}
+
+\begin{declaration*}
+%
+	The work in this thesis is based on research carried out in the Department of
+	Mathematical Sciences at Durham University. No part of this thesis has been
+	submitted elsewhere for any degree or qualification.
+%
+\end{declaration*}
+
+\begin{acknowledgements*}
+%
+	I would like to thank\ldots
+%
+\end{acknowledgements*}
+
+\begin{epigraph*}
+%
+	This a place for some profound quote which sums up your work, feelings or
+	life.
+	\source{Some book}{A. Author}
+%
+\end{epigraph*}
+
+%\dedicationtext{This thesis is dedicated to}
+\begin{dedication*}
+%
+	Someone special
+	\also[and]{that other guy}
+%
+\end{dedication*}
+
+\disableprotrusion
+\tableofcontents*
+\listoffigures
+\listoftables
+\enableprotrusion
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+%\include{intro}
+%\include{background}
+%\include{paper1}
+%\include{paper2}
+%\include{paper3}
+
+\appendix
+%\include{appendix1}
+%\include{appendix2}
+
+\nocite{*}
+\printbibliography[heading=bibintoc]
+
+\end{document}

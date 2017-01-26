@@ -1,0 +1,85 @@
+\RequirePackage{biblatex}
+% Change DOI and eprint handling (adapted from biblatex.def)
+\renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}%
+  %\newunit
+	\newblock
+  \iftoggle{bbx:doi}
+    {\printfield{doi}}
+    {}%
+  \newunit
+	\newblock
+  \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+	}
+\def\bib@urlsize{\small}
+% Specify how doi fields are typeset
+\DeclareFieldFormat{doi}{%
+  \newline%
+	{\bib@urlsize
+  \ifhyperref
+    {\href{https://dx.doi.org/#1}{\nolinkurl{doi:#1}}}
+		{\nolinkurl{doi:#1}}}}
+
+% Assume all eprints are arxiv links
+\DeclareFieldAlias{eprint}{eprint:arxiv}
+% Specify how arxiv fields are typeset
+\DeclareFieldFormat{eprint:arxiv}{%
+  \newline%
+	{\bib@urlsize
+  \ifhyperref
+    {\href{https://arxiv.org/\abx@arxivpath/#1}{%
+       \nolinkurl{arXiv:#1}%
+       \iffieldundef{eprintclass}
+         {}
+         {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}
+    {\nolinkurl{arXiv:#1}
+     \iffieldundef{eprintclass}
+       {}
+       {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}}
+
+% Change font size of url field
+\ifcsname textls\endcsname%
+\appto\bibsetup{%
+	% Ever so slightly squish the letters together in urls in the bibliography.
+	% This fixes an annoying overfull hbox in the EJC urls.
+	% The difference in spacing is given in thousands of em.
+	\DeclareFieldFormat{url}{\newline{\small\textls[-7]{\url{#1}}}}
+}%
+\else%
+	\DeclareFieldFormat{url}{\newline{\small\url{#1}}}
+\fi
+
+% restyle unpublished bib entries to be more similar to articles
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{location+date}%
+  \newunit\newblock
+	\usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+

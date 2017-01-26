@@ -1,0 +1,146 @@
+\usepackage[ascii]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[british]{babel}
+\usepackage[figuresright]{rotating}
+\usepackage[draft=false,protrusion=true,expansion,shrink=10,stretch=10,]{microtype}
+\makeatletter
+\@ifpackageloaded{microtype}{%
+	\providecommand{\disableprotrusion}{\microtypesetup{protrusion=false}}
+	\providecommand{\enableprotrusion}{\microtypesetup{protrusion=true}}
+}{%
+	\providecommand{\disableprotrusion}{}
+	\providecommand{\enableprotrusion}{}
+}
+\makeatother
+
+\usepackage{csquotes}
+\usepackage[backend=bibtex,maxbibnames=10,maxcitenames=4,maxalphanames=4,style=alphabetic,isbn=false]{biblatex}
+\usepackage{bibstyle-patch}
+\addbibresource{bibliography.bib}
+\appto\bibsetup{\raggedright}
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[hidelinks,draft=false]{hyperref}
+\usepackage{booktabs}
+\usepackage{xfrac}
+
+% Thmtools sets up theorem-like environments, and modifies the autoref
+% command from hyperref to work when these environments share a counter
+% Thmtools also defines an Autoref command for capitalising at the start
+% of a sentence
+\usepackage{thmtools}
+\declaretheorem[
+style=plain,
+name=Theorem,
+numberwithin=section
+]{thm}
+\declaretheorem[
+style=plain,
+name=Proposition,
+numberlike=thm
+]{prop}
+\declaretheorem[
+style=plain,
+name=Lemma,
+numberlike=thm
+]{lem}
+\declaretheorem[
+style=plain,
+name=Corollary,
+numberlike=thm
+]{cor}
+\declaretheorem[
+style=definition,
+name=Definition,
+numberlike=thm
+]{mdef}
+\declaretheorem[
+style=definition,
+name=Example,
+numberlike=thm
+]{example}
+\declaretheorem[
+style=definition,
+name=Remark,
+numberlike=thm
+]{rem}
+\declaretheorem[
+style=plain,
+name=Conjecture,
+numberlike=thm
+]{conj}
+\declaretheorem[
+style=plain,
+name=Question,
+numberlike=thm
+]{question}
+
+\numberwithin{equation}{section}
+\allowdisplaybreaks
+
+% Makes the last line of a page flush wtih the bottom margin for neatness
+%\raggedbottom
+%\emergencystretch=1em
+\flushbottom
+
+% use these to make paragraphs not indented,
+% and to separate consecutive paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em plus 3pt minus 3pt}
+
+% Provide itemize without extra spacing
+\newenvironment{itemize*}%
+{\begin{itemize}%
+	\setlength{\itemsep}{0pt}%
+	\setlength{\parskip}{0pt}}%
+{\end{itemize}}
+\newenvironment{enumerate*}%
+{\begin{enumerate}%
+	\setlength{\itemsep}{0pt}%
+	\setlength{\parskip}{0pt}}%
+{\end{enumerate}}
+
+% Format captions
+\usepackage[margin=15mm,hang]{caption}
+\usepackage{subcaption}
+
+% Provide widebar command
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareMathAccent{\widebar}{0}{mathx}{"73}
+
+\setfloatlocations{figure}{tbp}
+\setfloatlocations{table}{tbp}
+
+% In align*, use this to number a particular line
+% Rather than using align, and \nonumber-ing every other line
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+% Change autoref names. Generally I want sections to be capitalised at all
+% times, not just when starting a sentence.
+% (I'm not sure whether all these are necessary nor what the defaults are)
+\renewcommand{\equationautorefname}{equation}
+\newcommand{\equationAutorefname}{Equation}
+\newcommand{\sectionAutorefname}{Section}
+\newcommand{\chapterAutorefname}{Chapter}
+\newcommand{\subsectionAutorefname}{Subsection}
+\newcommand{\subsubsectionAutorefname}{Subsection}
+\newcommand{\algorithmAutorefname}{Algorithm}
+% Annoyingly these defs need to come *after* \begin{document}, so add to begin
+% document hook.
+\AtBeginDocument{%
+	\def\sectionautorefname{Section}%
+	\def\chapterautorefname{Chapter}%
+	\def\subsectionautorefname{Subsection}%
+	\def\subsubsectionautorefname{Subsection}%
+	\def\algorithmautorefname{Algorithm}%
+}
+% Allow section titles to be ragged on the right (ie not justified)
+% This gets rid of nasty hboxes where latex refuses to break the line
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\raggedright\normalfont\Large\bfseries}}
+\makeatother
