@@ -391,9 +391,8 @@
   \vspace*{\stretch{1}}
   \begin{minipage}{\dma@epi@width}
   \newcommand{\source}[2]{
-    \\[\dma@epi@sourcesep]
+    \par\vspace*{\dma@epi@sourcesep}
     \begin{minipage}{\textwidth}\begin{flushright}
-    \def\baselinestretch{1}
     \normalsize\normalfont
     \if\relax\detokenize{##1}\relax
       \if\relax\detokenize{##2}\relax\else
@@ -405,7 +404,7 @@
         by ##2
       \fi
     \fi
-    \end{flushright}\end{minipage}\vspace*{5em}}
+    \end{flushright}\end{minipage}\par\vspace*{5em}}
   \def\baselinestretch{1.4}
   \normalsize\em
 }{
