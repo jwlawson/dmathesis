@@ -45,12 +45,26 @@
   \@durham@dma@draftmodetrue  
   \@durham@dma@showkeystrue
   \@durham@dma@showframetrue
-	\PassOptionsToClass{draft}{report}
+  \PassOptionsToClass{draft}{report}
 }
 
 \newif\if@durham@dma@singlespacing\@durham@dma@singlespacingfalse
 \DeclareOption{singlespacing}{
   \@durham@dma@singlespacingtrue
+  \@durham@dma@halfspacingfalse
+  \@durham@dma@doublespacingfalse
+}
+\newif\if@durham@dma@halfspacing\@durham@dma@halfspacingfalse
+\DeclareOption{halfspacing}{
+  \@durham@dma@singlespacingfalse
+  \@durham@dma@halfspacingtrue
+  \@durham@dma@doublespacingfalse
+}
+\newif\if@durham@dma@doublespacing\@durham@dma@doublespacingtrue
+\DeclareOption{doublespacing}{
+  \@durham@dma@singlespacingfalse
+  \@durham@dma@halfspacingfalse
+  \@durham@dma@doublespacingtrue
 }
 \newif\if@durham@dma@twoside\@durham@dma@twosidefalse
 \DeclareOption{twoside}{
@@ -66,7 +80,21 @@
 }
 \newif\if@durham@dma@frontopenright\@durham@dma@frontopenrightfalse
 \DeclareOption{frontopenright}{
-	\@durham@dma@frontopenrighttrue
+  \@durham@dma@frontopenrighttrue
+}
+\newif\if@durham@dma@raggedtitles\@durham@dma@raggedtitlestrue
+\DeclareOption{raggedtitles}{
+  \@durham@dma@raggedtitlestrue
+}
+\DeclareOption{noraggedtitles}{
+  \@durham@dma@raggedtitlesfalse
+}
+\newif\if@durham@dma@chaprunninghead\@durham@dma@chaprunningheadtrue
+\DeclareOption{chaprunninghead}{
+  \@durham@dma@chaprunningheadtrue
+}
+\DeclareOption{nochaprunninghead}{
+  \@durham@dma@chaprunningheadfalse
 }
 
 % pass all other options to base class
@@ -193,8 +221,6 @@
   \fi
 \fi
 \if@twoside
-  \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-  \renewcommand{\sectionmark}[1]{\markright{\thesection. #1}{}}
   \if@durham@dma@headerfloatpage
     \fancyhead[RO]{\bf\thepage}
     \fancyhead[LO]{\bf\nouppercase\rightmark}
@@ -209,8 +235,12 @@
     \renewcommand{\headrulewidth}{\iffloatpage{0pt}{1pt}}
   \fi
 \else
-  \renewcommand{\chaptermark}[1]{\markright{#1}}
-  \renewcommand{\sectionmark}[1]{\markright{\thesection. #1}}
+  \def\chaptermark#1{%
+    \markright {\MakeUppercase{%
+      \ifnum \c@secnumdepth >\m@ne
+          \@chapapp\ \thechapter. \ %
+      \fi
+      #1}}}%
   \if@durham@dma@headerfloatpage
     \fancyhead[R]{\bf\thepage}
     \fancyhead[L]{\bf\nouppercase\rightmark}
@@ -227,16 +257,44 @@
   \renewcommand{\footrulewidth}{0pt}
 }
 
+\if@durham@dma@chaprunninghead\else
+  \if@twoside
+    \def\chaptermark#1{%
+      \markboth{\MakeUppercase{#1}}{}}%
+  \else
+    \def\chaptermark#1{%
+      \markright{\MakeUppercase{#1}}}%
+  \fi
+\fi
+% Original commands copied from report class
+\if@durham@dma@raggedtitles
+  \renewcommand\section{\@startsection{section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\raggedright\normalfont\Large\bfseries}}
+  \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\raggedright\normalfont\large\bfseries}}
+  \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\raggedright\normalfont\normalsize\bfseries}}
+\fi
+
 % -------------------------- %
 % ------- Line spacing ----- %
 \PassOptionsToPackage{nodisplayskipstretch}{setspace}
 \RequirePackage{setspace}
 
-%\onehalfspacing
-\doublespacing
-
 \if@durham@dma@singlespacing
   \singlespacing
+\fi
+\if@durham@dma@halfspacing
+  \onehalfspacing
+\fi
+\if@durham@dma@doublespacing
+  \doublespacing
 \fi
 
 % -------------------------------------------- %
@@ -386,8 +444,8 @@
     \addcontentsline{toc}{chapter}{Epigraph}
   \fi
   \markboth{}{}
-	\bgroup
-	\centering
+  \bgroup
+  \centering
   \vspace*{\stretch{1}}
   \begin{minipage}{\dma@epi@width}
   \newcommand{\source}[2]{
@@ -456,7 +514,7 @@
   \clearpage
 }
 \if@durham@dma@frontopenright
-	\let\chapterlike\chapter
+  \let\chapterlike\chapter
 \else
 % Provide a chapterlike command which does everything a chapter does, except
 % force a clear double page when openright is specified.

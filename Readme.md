@@ -30,10 +30,10 @@ writing programs should work.
 
 From the command line, use the usual commands
 ```
-	pdflatex <filename>
-	bibtex <filename>
-	pdflatex <filename>
-	pdflatex <filename>
+pdflatex <filename>
+bibtex <filename>
+pdflatex <filename>
+pdflatex <filename>
 ```
 
 A Makefile is also provided which includes some additional functionality, but is
@@ -86,6 +86,15 @@ like the look of.
 #### frontopenright
 Only affects `twoside` documents. Force each section in the front matter
 to open on the right.
+
+#### chaprunninghead/nochaprunninghead
+Specify whether the running head should display
+"Chapter X. Name of chapter" (with `chaprunninghead`) or just "Name of chapter"
+(with `nochaprunninghead`).
+
+#### raggedtitles/noraggedtitles
+Specify whether section titles should be justified (`noraggedtitles`) or be
+allowed to be ragged (`raggedtitles`).
 
 ## Environments
 

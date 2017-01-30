@@ -136,11 +136,3 @@ numberlike=thm
 	\def\subsubsectionautorefname{Subsection}%
 	\def\algorithmautorefname{Algorithm}%
 }
-% Allow section titles to be ragged on the right (ie not justified)
-% This gets rid of nasty hboxes where latex refuses to break the line
-\makeatletter
-\renewcommand\section{\@startsection {section}{1}{\z@}%
-                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                   {2.3ex \@plus.2ex}%
-                                   {\raggedright\normalfont\Large\bfseries}}
-\makeatother
