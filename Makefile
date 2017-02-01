@@ -2,6 +2,7 @@ NAME = main
 PTX = pdflatex
 LTX = latex
 BIBTEX = bibtex
+SHELL := /bin/bash
 
 SUBDIRS = 
 _SECTIONS = $(wildcard *.tex) $(foreach dir,$(SUBDIRS),$(wildcard $(dir)/*.tex))
@@ -25,7 +26,7 @@ PKGS = $(wildcard *.sty)
 TXFLAGS =  --synctex=1 -output-directory $(BUILD_DIR)
 
 RERUN = "(There were undefined references|Rerun to get (cross-references|the bars|outlines) right)"
-RERUNBIB = "No file.*\.bbl|Citation.*undefined"
+RERUNBIB = "No file.*\.bbl|Citation.*undefined|Empty bibliography"
 TIKZ_PRE = '\documentclass{standalone}\usepackage{booktabs}\usepackage{tkz-euclide}\usetkzobj{all}\usetikzlibrary{positioning}\usetikzlibrary{decorations.pathmorphing}\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}\DeclareMathAccent{\widebar}{0}{mathx}{"73}\usepackage{amsmath}\begin{document}\input{'
 TIKZ_POST = '}\end{document}'
 
@@ -36,7 +37,7 @@ define run-pdflatex
 	$(COPY);$(PTX) $(TXFLAGS) $<
 	egrep -q $(RERUNBIB) $(JOB).log && (pushd $(BUILD_DIR);$(BIBTEX) $(basename $<);popd;$(COPY);$(PTX) $(TXFLAGS) $<) ; true
 	egrep -q $(RERUN) $(JOB).log && ($(COPY);$(PTX) $(TXFLAGS) $<) >/dev/null; true
-	egrep -q $(RERUNBIB) $(JOB).log && (pushd $(BUILD_DIR);$(BIBTEX) $(JOB);popd;$(COPY);$(PTX) $(TXFLAGS) $<) ; true
+	egrep -q $(RERUNBIB) $(JOB).log && (pushd $(BUILD_DIR);$(BIBTEX) $(basename $<);popd;$(COPY);$(PTX) $(TXFLAGS) $<) ; true
 	if cmp -s $(JOB).toc $(JOB).toc.bak; then true ;else $(PTX) $(TXFLAGS) $< ; fi
 	$(RM) $(JOB).toc.bak
 	egrep -i "(Reference|Citation).*undefined" $(JOB).log ; true
@@ -87,7 +88,7 @@ $(BUILD_DIR)/$(BIB_FILE): $(BIB_FILE) | $(BUILD_DIR)
 	cp $< $@
 
 clean:
-	$(RM) $(BUILD_DIR)/*.{log,aux,bbl,blg,ilg,toc,lof,lot,idx,ind,snm,out,nav,synctex.gz,bak,xml,bib} *~
+	$(RM) $(BUILD_DIR)/*
 	$(RM) $(GIT_VARS) $(WC_VARS)
 	$(RM) -r $(PIC_TMP)
 	for dir in $(SUBDIRS); do \
@@ -95,7 +96,7 @@ clean:
 	done
 
 cleanpdf: clean
-	$(RM) $(BUILD_DIR)/*.{pdf,ps,dvi}
+	$(RM) -r $(BUILD_DIR)/*
 	$(RM) $(PICS)
 	for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir cleanpdf; \
