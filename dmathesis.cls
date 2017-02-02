@@ -213,12 +213,6 @@
 \renewcommand{\footrulewidth}{0pt}
 \if@durham@dma@footerdebug
   \fancyfoot[R]{\footnotesize\ttfamily\dmadate} % in draft mode, display the date
-  \ifcsname GITAbrHash\endcsname
-    \fancyfoot[L]{\footnotesize\ttfamily\GITAbrHash-\GITBranch}
-  \fi
-  \ifcsname WCBrief\endcsname
-    \fancyfoot[C]{\footnotesize\ttfamily\WCBrief}
-  \fi
 \fi
 \if@twoside
   \if@durham@dma@headerfloatpage
