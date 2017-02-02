@@ -179,6 +179,10 @@
 \newcommand{\dmatitle}{\dma@title}
 \newcommand\dma@title{}
 
+\newcommand{\subtitle}[1]{\renewcommand\dma@subtitle{#1}}
+\newcommand{\dmasubtitle}{\dma@subtitle}
+\newcommand\dma@subtitle{}
+
 \renewcommand{\author}[1]{\renewcommand\dma@author{#1}}
 \newcommand{\dmaauthor}{\dma@author}
 \newcommand\dma@author{}
@@ -358,6 +362,9 @@
   \centering
   \null
   {\huge \bf \dmatitle \par}
+  \if\relax\dmasubtitle\relax\else
+    \vspace{1.5em}{\LARGE \emph \dmasubtitle \par}
+  \fi
   \vspace{\stretch{1}}
   {\LARGE\dmaauthor\par}
   \vspace{\stretch{1}}
@@ -469,16 +476,15 @@
 \renewenvironment{abstract}{\begin{abstract*}[\@durham@dma@intoc]}{\end{abstract*}}
 \newenvironment{abstract*}[1][\@empty]{
   \if@openright\cleardoublepage\else\clearpage\fi
-  \pagestyle{fancy}
-  \thispagestyle{plain}
+  \pagestyle{empty}
   \ifx#1\@durham@dma@intoc
     \phantomsection
-    \addcontentsline{toc}{chapter}{Abstract}
+    \addcontentsline{toc}{chapter}{\abstractname}
   \fi
   \if@twoside
-    \markboth{Abstract}{Abstract}
+    \markboth{\abstractname}{\abstractname}
   \else
-    \markright{Abstract}
+    \markright{\abstractname}
   \fi
   \bgroup
     \setlength{\parindent}{0pt}
@@ -487,7 +493,10 @@
     \null
     % Restrict title width to give same linebreaks as in titlepage
     \begin{minipage}[c]{.8\textwidth} 
-    \centering\bf\LARGE\dmatitle\par
+    \centering{\LARGE\bf\dmatitle\par}
+    \if\relax\dmasubtitle\relax\else
+      \vspace{1.0em}{\Large\emph\dmasubtitle\par}
+    \fi
     \end{minipage}
     \par\nointerlineskip
     {\LARGE\vspace{2em}}
@@ -502,11 +511,12 @@
     {\LARGE\vspace{2em}}
   \egroup
   \vspace{-\parskip}
-  \par\noindent{\bf Abstract:}
+  \par\noindent{\bf \abstractname:}
 }
 {
   \clearpage
 }
+
 \if@durham@dma@frontopenright
   \let\chapterlike\chapter
 \else
@@ -518,6 +528,7 @@
   \@afterindentfalse
   \secdef\@chapter\@schapter}
 \fi
+
 \newenvironment{declaration}{\begin{declaration*}[\@durham@dma@intoc]}{\end{declaration*}}
 \newenvironment{declaration*}[1][\@empty]{
   \chapterlike*{Declaration}
