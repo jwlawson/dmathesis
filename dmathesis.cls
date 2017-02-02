@@ -18,6 +18,10 @@
 % ------------------------------- %
 % --- Document class options ---- %
 
+% a4paper is explicitly defined when setting the
+% page geometry below, so this is probably redundant...
+\PassOptionsToClass{a4paper}{report}
+
 % deal with draft/thesisdraft option
 \newif\if@durham@dma@footerdebug\@durham@dma@footerdebugfalse
 \newif\if@durham@dma@draftmode\@durham@dma@draftmodefalse
@@ -96,6 +100,11 @@
 \DeclareOption{nochaprunninghead}{
   \@durham@dma@chaprunningheadfalse
 }
+% Default to 12pt font size
+\newcommand\@dmathesisptsize{12pt}
+\DeclareOption{12pt}{\renewcommand\@dmathesisptsize{12pt}}
+\DeclareOption{11pt}{\renewcommand\@dmathesisptsize{11pt}}
+\DeclareOption{10pt}{\renewcommand\@dmathesisptsize{10pt}}
 
 % pass all other options to base class
 \DeclareOption*{
@@ -104,9 +113,8 @@
 
 \ProcessOptions\relax
 
-% a4paper is explicitly defined when setting the
-% page geometry below, so this is probably redundant...
-\LoadClass[a4paper,12pt]{report}
+\PassOptionsToClass{\@dmathesisptsize}{report}
+\LoadClass{report}
 
 % ---------------------------------------------------------- %
 % ----------------- Main body of class --------------------- %
