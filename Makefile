@@ -1,13 +1,14 @@
 NAME = main
+MAIN_TEX = $(NAME).tex
+OUTPUT = $(NAME).pdf
+
 PTX = pdflatex
-LTX = latex
 BIBTEX = biber
 SHELL := /bin/bash
 
 SUBDIRS = 
 _SECTIONS = $(wildcard *.tex) $(foreach dir,$(SUBDIRS),$(wildcard $(dir)/*.tex))
 BUILD_DIR = build
-MAIN = $(NAME).pdf
 BIB_FILE = $(word 1, $(wildcard *.bib))
 CLS_FILE = dmathesis.cls
 PKGS = $(wildcard *.sty)
@@ -32,35 +33,35 @@ endef
 
 .PHONY: all clean cleanpdf subdirs $(SUBDIRS)
 
-all: $(MAIN)
+all: $(OUTPUT)
 
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
 
-$(BUILD_DIR):
+./$(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(MAIN): | $(SUBDIRS)
-$(MAIN): | $(BUILD_DIR)
-$(MAIN): $(NAME).tex $(_SECTIONS) $(BUILD_DIR)/$(BIB_FILE) $(PKGS) $(CLS_FILE)
-	$(eval JOB := $(BUILD_DIR)/$(NAME))
+$(OUTPUT): | $(SUBDIRS)
+$(OUTPUT): | $(BUILD_DIR)
+$(OUTPUT): $(MAIN_TEX) $(_SECTIONS) ./$(BUILD_DIR)/$(BIB_FILE) $(PKGS) $(CLS_FILE)
+	$(eval JOB := ./$(BUILD_DIR)/$(NAME))
 	@$(run-pdflatex)
-	mv $(BUILD_DIR)/$(NAME).pdf $@
+	mv $(JOB).pdf $@
 
-$(BUILD_DIR)/$(BIB_FILE): $(BIB_FILE) | $(BUILD_DIR)
+./$(BUILD_DIR)/$(BIB_FILE): $(BIB_FILE) | $(BUILD_DIR)
 	cp $< $@
 
 clean:
-	$(RM) $(BUILD_DIR)/*
-	for dir in $(SUBDIRS); do \
+	$(RM) ./$(BUILD_DIR)/*.{log,aux,bbl,bcf,blg,ilg,toc,tdo,lof,lot,idx,ind,snm,out,nav,synctex.gz,bak,xml} *~
+	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir clean; \
 	done
 
 cleanpdf: clean
-	$(RM) -r $(BUILD_DIR)/*
-	for dir in $(SUBDIRS); do \
+	$(RM) ./$(BUILD_DIR)/*.{pdf,ps,dvi}
+	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir cleanpdf; \
 	done
 
