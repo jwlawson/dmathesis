@@ -1,7 +1,7 @@
 NAME = main
 PTX = pdflatex
 LTX = latex
-BIBTEX = bibtex
+BIBTEX = biber
 SHELL := /bin/bash
 
 SUBDIRS = 
