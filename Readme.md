@@ -61,7 +61,7 @@ left and right.
 
 ### Additional options
 
-#### showframes
+#### showframe
 Show the page boundaries, heading baselines and footer baselines.
 
 #### showkeys
@@ -69,7 +69,7 @@ Show all the labels used in captions, equations, references, citations etc.
 
 #### thesisdraft
 This is the equivalent of setting all three of `draft`, `showkeys` and
-`showframes`.
+`showframe`.
 
 #### footerdebug/nofooterdebug
 Enable or disable the debug footer line showing git information (if provided),
